@@ -1,7 +1,8 @@
-require_relative "../shared"
+require_relative "./shared"
 
-html = fetch_html("https://azurlane.koumakan.jp/List_of_Ships")
-rows = html.css(".mw-parser-output .wikitable tr").reject { |row| row.at("th") }
+rows = read_fixture("ships_short", "list_of_ships")
+  .css(".mw-parser-output .wikitable tr")
+  .reject { |row| row.at("th") }
 
 data = rows.map do |row|
   tds = row.css("td").map(&:text)

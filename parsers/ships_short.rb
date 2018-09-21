@@ -1,7 +1,7 @@
 require_relative "../shared"
 
 html = fetch_html("https://azurlane.koumakan.jp/List_of_Ships")
-rows = html.css(".mw-parser-output .wikitable tr").reject { |row| row.at_css("th") }
+rows = html.css(".mw-parser-output .wikitable tr").reject { |row| row.at("th") }
 
 data = rows.map do |row|
   tds = row.css("td").map(&:text)
@@ -20,7 +20,7 @@ data = rows.map do |row|
       airPower:  tds[9],
       torpedo:   tds[10]
     },
-    url: "https://azurlane.koumakan.jp#{row.at_css("a")["href"]}"
+    url: "https://azurlane.koumakan.jp#{row.at("a")["href"]}"
   }
 end
 

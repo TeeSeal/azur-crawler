@@ -5,7 +5,6 @@ require "json"
 DATA_DIR    = File.join(__dir__, "..", "data")
 FIXTURE_DIR = File.join(__dir__, "..", "fixtures")
 
-
 Dir.mkdir(DATA_DIR) if ARGV.empty? && !File.exist?(DATA_DIR)
 
 def read_fixture(dir, name)
@@ -23,4 +22,6 @@ def write_json(data, default_name = "undefined")
   File.write(file_path, JSON.pretty_generate(data))
 end
 
-
+def build_url(path)
+  "https://azurlane.koumakan.jp#{path}"
+end

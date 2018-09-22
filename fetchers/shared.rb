@@ -1,4 +1,5 @@
 require "rest-client"
+require "nokogiri"
 
 FIXTURE_DIR = File.join(__dir__, "..", "fixtures")
 Dir.mkdir(FIXTURE_DIR) unless File.exist?(FIXTURE_DIR)

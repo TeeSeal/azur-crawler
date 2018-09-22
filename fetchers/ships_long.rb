@@ -1,6 +1,6 @@
 require_relative "./shared"
 
-urls = fetch_html("https://azurlane.koumakan.jp/List_of_Ships")
+urls = Nokogiri::HTML(fetch_html("https://azurlane.koumakan.jp/List_of_Ships"))
   .css(".mw-parser-output .wikitable tr")
   .reject { |row| row.at("th") }
   .map { |row| "https://azurlane.koumakan.jp#{row.at("a")["href"]}" }

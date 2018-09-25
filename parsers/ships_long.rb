@@ -14,7 +14,10 @@ end
 
 def extract_base_data(html)
   rows = html.css("tr").first(6).map { |row| row.at("td").text.strip }
-  [:construction_time, :rarity, :class, :id, :nationality, :type].zip(rows).to_h
+  data = [:construction_time, :rarity, :class, :id, :nationality, :type].zip(rows).to_h
+
+  data[:rarity] = parse_rarity(html.css("tr")[1].at("img")["alt"])
+  data
 end
 
 def extract_stats(html)
@@ -68,6 +71,18 @@ def extract_pictures(html)
     icon:   (build_url(html.at("img")["src"]) rescue "N/A"),
     chibi:  (build_url(html.at("#talkingchibi img")["src"]) rescue "N/A")
   }
+end
+
+def parse_rarity(string)
+  case string
+  when "Rarity Normal.png" then "Normal"
+  when "Rare.png"          then "Rare"
+  when "Elite.png"         then "Elite"
+  when "SuperRare.png"     then "Super Rare"
+  when "Legendary.png"     then "Legendary"
+  when "Priority.png"      then "Priority"
+  else string
+  end
 end
 
 data = all_fixtures_from("ships_long").map do |html|

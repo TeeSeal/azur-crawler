@@ -1,11 +1,16 @@
 require_relative "./shared"
+require "pry"
 
 rows = read_fixture("ships_short", "list_of_ships")
   .css(".mw-parser-output .wikitable tr")
   .reject { |row| row.at("th") }
 
+thumbnails = read_fixture("ships_short", "thumbnails")
+
 data = rows.map do |row|
-  tds = row.css("td").map(&:text)
+  tds            = row.css("td").map(&:text)
+  img            = thumbnails.at("a[title='#{tds[1]}'] img")
+  thumbnail_path = img ? (img["srcset"] || img["src"]).split.first : nil
 
   {
     id:          tds[0],
@@ -21,7 +26,8 @@ data = rows.map do |row|
       airPower:  tds[9],
       torpedo:   tds[10]
     },
-    url: "https://azurlane.koumakan.jp#{row.at("a")["href"]}"
+    url: build_url(row.at("a")["href"]),
+    thumbnail: thumbnail_path.nil? ? nil : build_url(thumbnail_path)
   }
 end
 

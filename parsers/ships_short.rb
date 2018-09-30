@@ -1,5 +1,4 @@
 require_relative "./shared"
-require "pry"
 
 rows = read_fixture("ships_short", "list_of_ships")
   .css(".mw-parser-output .wikitable tr")

@@ -1,5 +1,4 @@
 require_relative "./shared"
-require "pry"
 
 def extract_names(html)
   title = html.at("span").text.strip.gsub(/^[A-Z]{3,4} /, "")

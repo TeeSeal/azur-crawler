@@ -2,13 +2,14 @@ require_relative "./shared"
 
 def extract_names(html)
   title = html.at("span").text.strip.gsub(/^[A-Z]{3,4} /, "")
-  names  = {
-    en: title[/^[^\(]+/].strip,
-    cn: title[/(?<=cn: )[^;]+/].strip,
-    jp: title[/(?<=jp: )[^\)]+/].strip
-  }.compact
 
-  { names: names }
+  {
+    names: {
+      en: title[/^[^\(]+/].strip,
+      cn: title[/(?<=cn: )[^;]+/].strip,
+      jp: title[/(?<=jp: )[^\)]+/].strip
+    }
+  }
 end
 
 def extract_base_data(html)

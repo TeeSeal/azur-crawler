@@ -67,8 +67,8 @@ def extract_pictures(html)
 
   {
     images: skins,
-    icon:   (build_url(html.at("img")["src"]) rescue "N/A"),
-    chibi:  (build_url(html.at("#talkingchibi img")["src"]) rescue "N/A")
+    icon:   (build_url(html.at("img")["src"]) rescue ""),
+    chibi:  (build_url(html.at("#talkingchibi img")["src"]) rescue "")
   }
 end
 

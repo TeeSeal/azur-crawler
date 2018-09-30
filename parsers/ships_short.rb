@@ -26,7 +26,7 @@ data = rows.map do |row|
       torpedo:   tds[10]
     },
     url: build_url(row.at("a")["href"]),
-    thumbnail: thumbnail_path.nil? ? nil : build_url(thumbnail_path)
+    thumbnail: thumbnail_path.nil? ? "" : build_url(thumbnail_path)
   }
 end
 

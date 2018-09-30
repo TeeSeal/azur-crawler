@@ -73,6 +73,18 @@ def extract_pictures(html)
   }
 end
 
+def extract_drop_locations(html)
+  chapters = html.at(".nodesktop table").css("tr").drop(6)
+
+  drop_locations = chapters.map.with_index do |row, chapter_index|
+    stages        = row.css("td").map { |td| td["style"].include?("Green") }
+    stage_indexes = stages.each_index.select { |i| stages[i] }
+    stage_indexes.map { |i| "#{chapter_index + 1}-#{i + 1}" }
+  end.flatten
+
+  { drop_locations: drop_locations }
+end
+
 def parse_rarity(string)
   case string
   when "Rarity Normal.png" then "Normal"
@@ -89,11 +101,15 @@ data = all_fixtures_from("ships_long").map do |html|
   hash = { page_url: html.at("meta[property='og:url']")["content"] }
 
   html = html.at(".mw-parser-output")
-  hash.merge!(extract_names(html))
-  hash.merge!(extract_base_data(html))
-  hash.merge!(extract_stats(html))
-  hash.merge!(extract_equipment_data(html))
-  hash.merge!(extract_pictures(html))
+  [
+    hash,
+    extract_names(html),
+    extract_base_data(html),
+    extract_stats(html),
+    extract_equipment_data(html),
+    extract_pictures(html),
+    extract_drop_locations(html)
+  ].reduce(:merge)
 end.sort_by { |ship| ship[:id] }
 
 write_json(data, "ships_long")
